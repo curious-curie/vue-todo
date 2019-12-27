@@ -1,23 +1,24 @@
 <template>
     <div>
-        {{ todo.title }}
+        {{ todo.title }} {{ todo.id }}
         <button
           v-if="todo.completed"
           @click="toggleTodo(todo)"
         >
-        Completed
+          Completed
         </button>
 
         <button
-        v-else @click="toggleTodo(todo)"
+          v-else
+          @click="toggleTodo(todo)"
         >
-        Complete
+          Complete
         </button>
 
         <button
-        @click="deleteTodo(todo)"
+          @click="deleteTodo(todo)"
         >
-        X
+          X
         </button>
 
     </div>

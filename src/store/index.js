@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-let id = 0
+// let id = 0
 const filters = {
   all: todos => {
     return todos
@@ -41,8 +41,13 @@ export default new Vuex.Store({
       state.todos = state.todos.filter(item => item !== todoItem)
     },
     TOGGLE_TODO (state, todoItem) {
-      const isComplete = state.todos[todoItem.id].completed
-      state.todos[todoItem.id].completed = !isComplete
+      console.log(todoItem.id)
+      state.todos.forEach((item, index) => {
+        if (todoItem === item) {
+          console.log(item.title)
+          Vue.set(state.todos, index, { ...item, completed: !item.completed })
+        }
+      })
     },
     CLEAR_COMPLETED (state) {
       state.todos = state.todos.filter(
@@ -68,7 +73,7 @@ export default new Vuex.Store({
     addTodo ({ commit, state }) {
       if (state.newTodo) {
         const todoItem = {
-          id: id++,
+          id: state.todos.length,
           title: state.newTodo,
           completed: false
         }
@@ -87,7 +92,6 @@ export default new Vuex.Store({
       commit('UPDATE_STORAGE')
     },
     toggleTodo ({ commit }, todo) {
-      console.log(todo)
       commit('TOGGLE_TODO', todo)
       commit('UPDATE_STORAGE')
     },
