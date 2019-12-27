@@ -28,6 +28,15 @@ export default new Vuex.Store({
     TOGGLE_TODO (state, todoItem) {
       let isComplete = state.todos[todoItem.id].completed
       state.todos[todoItem.id].completed = !isComplete
+    },
+    CLEAR_COMPLETED (state) {
+      state.todos = state.todos.filter(
+        item => !item.completed
+      )
+    },
+    COMPLETE_ALL (state) {
+      state.todos.forEach((todoItem) =>
+        Vue.set(todoItem, 'completed', true))
     }
     // UPDATE_STORAGE (state) {
     //   localStorage.setItem('todos', JSON.stringify(state.todos))
@@ -56,6 +65,12 @@ export default new Vuex.Store({
     },
     toggleTodo ({ commit }, todo) {
       commit('TOGGLE_TODO', todo)
+    },
+    clearCompleted ({ commit }) {
+      commit('CLEAR_COMPLETED')
+    },
+    completeAll ({ commit }) {
+      commit('COMPLETE_ALL')
     }
     // updateStorage ({ commit }) {
     //   commit('UPDATE_STORAGE')
