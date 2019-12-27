@@ -3,11 +3,27 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const filters = {
+  all: todos => {
+    return todos
+  },
+  active: function (todos) {
+    return todos.filter(todo => {
+      return !todo.completed
+    })
+  },
+  completed: function (todos) {
+    return todos.filter(todo => {
+      return todo.completed
+    })
+  }
+}
+
 export default new Vuex.Store({
   state: {
     todos: [],
     newTodo: '',
-    storage: []
+    selectedFilter: 'all'
   },
 
   mutations: {
@@ -37,10 +53,13 @@ export default new Vuex.Store({
     COMPLETE_ALL (state) {
       state.todos.forEach((todoItem) =>
         Vue.set(todoItem, 'completed', true))
+    },
+    APPLY_FILTER (state, selectedFilter) {
+      state.selectedFilter = selectedFilter
+      state.filteredTodos = filters[selectedFilter](state.todos)
     }
     // UPDATE_STORAGE (state) {
     //   localStorage.setItem('todos', JSON.stringify(state.todos))
-    // }
   },
 
   actions: {
@@ -71,6 +90,9 @@ export default new Vuex.Store({
     },
     completeAll ({ commit }) {
       commit('COMPLETE_ALL')
+    },
+    applyFilter ({ commit }, selectedFilter) {
+      commit('APPLY_FILTER', selectedFilter)
     }
     // updateStorage ({ commit }) {
     //   commit('UPDATE_STORAGE')
@@ -80,6 +102,7 @@ export default new Vuex.Store({
     // }
 
   },
-  modules: {
+  getters: {
+    filtered: state => filters[state.selectedFilter](state.todos)
   }
 })

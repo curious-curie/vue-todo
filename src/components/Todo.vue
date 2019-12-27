@@ -8,7 +8,6 @@
 </template>
 
 <script>
-// todo: complete, delete
 export default {
   props: ['todo'],
   methods: {

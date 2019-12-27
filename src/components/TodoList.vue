@@ -6,14 +6,18 @@
         @change="setNewTodo"
         :value="newTodo"
       >
-      {{ JSON.stringify(localStorage) }}
       <todo
-        v-for="todo in todos"
+        v-for="todo in filteredTodos"
         :key="todo.id"
         :todo="todo"
       />
+
       <button @click="clearCompleted">Clear completed</button>
       <button @click="completeAll">complete all</button>
+      <router-link to = '/'><button @click="applyFilter('all')">all</button></router-link>
+      <router-link to = '/active'><button @click="applyFilter('active')">active</button></router-link>
+      <router-link to = '/completed'><button @click="applyFilter('completed')">completed</button></router-link>
+
   </div>
 </template>
 
@@ -22,20 +26,31 @@
 import Todo from '@/components/Todo.vue'
 import { mapState } from 'vuex'
 
+let storage = {
+  get: function () {
+    return JSON.parse(localStorage.getItem('todos') || '[]')
+  },
+  update: function (newTodos) {
+    localStorage.setItem('todos', JSON.stringify(newTodos))
+  }
+}
 export default {
   name: 'TodoList',
-  data () {
-    return {
-      localStorage: {}
-    }
-  },
   components: {
     Todo
   },
-  computed: mapState({
-    todos: state => state.todos,
-    newTodo: state => state.newTodo
-  }),
+  data () {
+    return {
+      local: storage.get()
+    }
+  },
+  computed: {
+    ...mapState({
+      todos: state => state.todos,
+      newTodo: state => state.newTodo
+    }),
+    filteredTodos () { return this.$store.getters.filtered }
+  },
 
   methods: {
     setNewTodo (e) {
@@ -50,13 +65,14 @@ export default {
     },
     completeAll () {
       this.$store.dispatch('completeAll')
+    },
+    applyFilter (filter) {
+      this.$store.dispatch('applyFilter', filter)
     }
   },
   watch: {
-    todos (newTodos) {
-      localStorage.setItem('todos', JSON.stringify(newTodos))
-      this.localStorage = localStorage
-      console.log(localStorage)
+    todos () {
+      storage.update(this.todos)
     }
   }
 }
