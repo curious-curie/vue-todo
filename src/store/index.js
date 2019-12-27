@@ -84,15 +84,19 @@ export default new Vuex.Store({
     },
     deleteTodo ({ commit }, todo) {
       commit('DELETE_TODO', todo)
+      commit('UPDATE_STORAGE')
     },
     toggleTodo ({ commit }, todo) {
       commit('TOGGLE_TODO', todo)
+      commit('UPDATE_STORAGE')
     },
     clearCompleted ({ commit }) {
       commit('CLEAR_COMPLETED')
+      commit('UPDATE_STORAGE')
     },
     completeAll ({ commit }) {
       commit('COMPLETE_ALL')
+      commit('UPDATE_STORAGE')
     },
     applyFilter ({ commit }, selectedFilter) {
       commit('APPLY_FILTER', selectedFilter)
