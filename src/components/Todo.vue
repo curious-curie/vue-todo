@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{ todo.title }} {{ todo.id }}
+        <h3> {{ todo.title }} </h3>
         <button
           v-if="todo.completed"
           @click="toggleTodo(todo)"
@@ -16,6 +16,7 @@
         </button>
 
         <button
+          id="deleteTodo"
           @click="deleteTodo(todo)"
         >
           X

@@ -11,13 +11,8 @@ const routes = [
     component: Home
   },
   {
-    path: '/active',
-    name: 'active',
-    component: Home
-  },
-  {
-    path: '/completed',
-    name: 'completed',
+    path: '/:filter',
+    name: 'todos',
     component: Home
   }
 ]
