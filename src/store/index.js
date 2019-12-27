@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+let id = 0
 const filters = {
   all: todos => {
     return todos
@@ -23,8 +24,7 @@ export default new Vuex.Store({
   state: {
     todos: JSON.parse(localStorage.getItem('todos') || '[]'),
     newTodo: '',
-    selectedFilter: 'all',
-    locals: []
+    selectedFilter: 'all'
   },
 
   mutations: {
@@ -68,7 +68,7 @@ export default new Vuex.Store({
     addTodo ({ commit, state }) {
       if (state.newTodo) {
         const todoItem = {
-          id: state.todos.length,
+          id: id++,
           title: state.newTodo,
           completed: false
         }
@@ -87,6 +87,7 @@ export default new Vuex.Store({
       commit('UPDATE_STORAGE')
     },
     toggleTodo ({ commit }, todo) {
+      console.log(todo)
       commit('TOGGLE_TODO', todo)
       commit('UPDATE_STORAGE')
     },
@@ -101,13 +102,6 @@ export default new Vuex.Store({
     applyFilter ({ commit }, selectedFilter) {
       commit('APPLY_FILTER', selectedFilter)
     }
-    // updateStorage ({ commit }) {
-    //   commit('UPDATE_STORAGE')
-    // },
-    // fetchStorage ({ commit }) {
-    //   commit('FET')
-    // }
-
   },
   getters: {
     filtered: state => filters[state.selectedFilter](state.todos)
