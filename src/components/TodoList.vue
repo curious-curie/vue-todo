@@ -2,8 +2,8 @@
   <div>
       <input
         placeholder="What needs to be done?"
-        v-on:keyup.enter="addTodo"
-        @change="setNewTodo"
+        v-on:keyup.enter="addTodoItem"
+        @change="setNewTodo($event.target.value)"
         :value="newTodo"
       >
       <todo
@@ -24,14 +24,11 @@
 <script>
 // @ is an alias to /src
 import Todo from '@/components/Todo.vue'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 let storage = {
   get: function () {
     return JSON.parse(localStorage.getItem('todos') || '[]')
-  },
-  update: function (newTodos) {
-    localStorage.setItem('todos', JSON.stringify(newTodos))
   }
 }
 export default {
@@ -45,34 +42,26 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      todos: state => state.todos,
-      newTodo: state => state.newTodo
-    }),
+    ...mapState([
+      'todos',
+      'newTodo'
+    ]),
     filteredTodos () { return this.$store.getters.filtered }
   },
 
   methods: {
-    setNewTodo (e) {
-      this.$store.dispatch('setNewTodo', e.target.value)
-    },
-    addTodo () {
-      this.$store.dispatch('addTodo')
-      this.$store.dispatch('clearNewTodo')
-    },
-    clearCompleted () {
-      this.$store.dispatch('clearCompleted')
-    },
-    completeAll () {
-      this.$store.dispatch('completeAll')
-    },
-    applyFilter (filter) {
-      this.$store.dispatch('applyFilter', filter)
-    }
-  },
-  watch: {
-    todos () {
-      storage.update(this.todos)
+    ...mapActions([
+      'clearCompleted',
+      'completeAll',
+      'applyFilter',
+      'setNewTodo',
+      'clearTodo',
+      'addTodo',
+      'clearNewTodo'
+    ]),
+    addTodoItem () {
+      this.addTodo()
+      this.clearNewTodo()
     }
   }
 }

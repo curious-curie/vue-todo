@@ -21,9 +21,10 @@ const filters = {
 
 export default new Vuex.Store({
   state: {
-    todos: [],
+    todos: JSON.parse(localStorage.getItem('todos') || '[]'),
     newTodo: '',
-    selectedFilter: 'all'
+    selectedFilter: 'all',
+    locals: []
   },
 
   mutations: {
@@ -37,12 +38,10 @@ export default new Vuex.Store({
       state.newTodo = ''
     },
     DELETE_TODO (state, todoItem) {
-      state.todos = state.todos.filter(
-        item => item !== todoItem
-      )
+      state.todos = state.todos.filter(item => item !== todoItem)
     },
     TOGGLE_TODO (state, todoItem) {
-      let isComplete = state.todos[todoItem.id].completed
+      const isComplete = state.todos[todoItem.id].completed
       state.todos[todoItem.id].completed = !isComplete
     },
     CLEAR_COMPLETED (state) {
@@ -51,16 +50,19 @@ export default new Vuex.Store({
       )
     },
     COMPLETE_ALL (state) {
-      state.todos.forEach((todoItem) =>
-        Vue.set(todoItem, 'completed', true))
+      state.todos = state.todos.map((todoItem) =>
+        ({
+          ...todoItem,
+          completed: true
+        }))
     },
     APPLY_FILTER (state, selectedFilter) {
       state.selectedFilter = selectedFilter
       state.filteredTodos = filters[selectedFilter](state.todos)
-    }
-    // UPDATE_STORAGE (state) {
-    //   localStorage.setItem('todos', JSON.stringify(state.todos))
-  },
+    },
+    UPDATE_STORAGE (state) {
+      localStorage.setItem('todos', JSON.stringify(state.todos))
+    } },
 
   actions: {
     addTodo ({ commit, state }) {
@@ -71,6 +73,7 @@ export default new Vuex.Store({
           completed: false
         }
         commit('ADD_TODO', todoItem)
+        commit('UPDATE_STORAGE')
       }
     },
     setNewTodo ({ commit }, todoInput) {
