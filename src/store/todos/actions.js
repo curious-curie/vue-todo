@@ -1,5 +1,4 @@
 import db from '@/main'
-
 export default {
   loadTodos: ({ commit }, payload) => {
     commit('LOAD_TODOS', payload)

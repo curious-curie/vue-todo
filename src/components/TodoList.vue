@@ -1,17 +1,17 @@
 <template>
   <div class="container">
 
-          <input
+      <input
           placeholder="What needs to be done?"
           v-on:keyup.enter="addTodoItem"
           @change="setNewTodo($event.target.value)"
           :value="newTodo">
       <todo
         class = "todo__container"
-        v-for="todo in filtered"
+        :class="{ completed: todo.completed }"
+        v-for="todo in filteredTodos"
         :key="todo.title"
         :todo="todo"
-        :class="{ completed: todo.completed }"
       />
 
       <div class="footer">
@@ -36,13 +36,6 @@
 import Todo from '@/components/Todo.vue'
 import { mapState, mapActions } from 'vuex'
 import db from '@/main'
-
-let storage = {
-  get: function () {
-    return JSON.parse(localStorage.getItem('todos') || '[]')
-  }
-}
-
 const filters = {
   all: todos => {
     return todos
@@ -69,7 +62,6 @@ export default {
   },
   data () {
     return {
-      local: storage.get(),
       selectedFilter: 'all'
     }
   },
@@ -78,7 +70,7 @@ export default {
       'todos',
       'newTodo'
     ]),
-    filtered () { return filters[this.selectedFilter](this.todos) }
+    filteredTodos () { return filters[this.selectedFilter](this.todos) }
   },
 
   watch: {
