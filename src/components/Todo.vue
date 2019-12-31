@@ -31,7 +31,7 @@ import { mapActions } from 'vuex'
 export default {
   props: ['todo'],
   methods: {
-    ...mapActions([
+    ...mapActions('todos', [
       'deleteTodo',
       'toggleTodo'
     ])

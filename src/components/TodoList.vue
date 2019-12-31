@@ -74,7 +74,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([
+    ...mapState('todos', [
       'todos',
       'newTodo'
     ]),
@@ -88,7 +88,7 @@ export default {
   },
 
   methods: {
-    ...mapActions([
+    ...mapActions('todos', [
       'clearCompleted',
       'completeAll',
       'applyFilter',
