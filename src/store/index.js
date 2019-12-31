@@ -1,13 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as firebase from 'firebase'
 import db from '@/main'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    todos: JSON.parse(localStorage.getItem('todos') || '[]'),
+    todos: [],
     newTodo: ''
   },
 
@@ -43,34 +42,32 @@ export default new Vuex.Store({
           completed: true
         }))
     },
-    UPDATE_STORAGE (state) {
-      localStorage.setItem('todos', JSON.stringify(state.todos))
-      db.collection('todos').orderBy('created_at').onSnapshot((snapshot) => {
-        let items = []
+    LOAD_TODOS (state, payload) {
+      payload.onSnapshot((snapshot) => {
+        state.todos = []
         snapshot.forEach((doc) => {
-          items.push({ id: doc.id, title: doc.data().title })
+          state.todos.push(doc.data())
         })
-        state.items = items
       })
-    } },
+    }
+  },
 
   actions: {
+    loadTodos: ({ commit }, payload) => {
+      commit('LOAD_TODOS', payload)
+    },
     addTodo ({ commit, state }) {
       if (state.newTodo) {
         const todoItem = {
-          id: state.todos.length,
           title: state.newTodo,
           completed: false
         }
         commit('ADD_TODO', todoItem)
-        commit('UPDATE_STORAGE')
         // let ref = firebase.database().ref('todos')
         db.collection('todos').doc(todoItem.title).set({
-          id: state.todos.length,
           title: state.newTodo,
           completed: false
         })
-        console.log(db.collection('todos'))
       }
     },
     setNewTodo ({ commit }, todoInput) {
@@ -84,9 +81,6 @@ export default new Vuex.Store({
       db.collection('todos')
         .doc(todo.title)
         .delete()
-      let ref = firebase.database().ref('todos')
-      ref.child(todo.id).remove()
-      commit('UPDATE_STORAGE')
     },
     toggleTodo ({ commit }, todo) {
       commit('TOGGLE_TODO', todo)
@@ -95,11 +89,9 @@ export default new Vuex.Store({
       db.collection('todos')
         .doc(todo.title)
         .set(todoItem)
-      commit('UPDATE_STORAGE')
     },
     clearCompleted ({ commit }) {
       commit('CLEAR_COMPLETED')
-      commit('UPDATE_STORAGE')
       db.collection('todos').get()
         .then(snapshot => {
           snapshot.forEach(doc => {
@@ -113,7 +105,6 @@ export default new Vuex.Store({
     },
     completeAll ({ commit }) {
       commit('COMPLETE_ALL')
-      commit('UPDATE_STORAGE')
       db.collection('todos').get()
         .then(snapshot => {
           snapshot.forEach(doc => {

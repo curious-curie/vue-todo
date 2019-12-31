@@ -9,7 +9,7 @@
       <todo
         class = "todo__container"
         v-for="todo in filtered"
-        :key="todo.id"
+        :key="todo.title"
         :todo="todo"
         :class="{ completed: todo.completed }"
       />
@@ -35,6 +35,7 @@
 // @ is an alias to /src
 import Todo from '@/components/Todo.vue'
 import { mapState, mapActions } from 'vuex'
+import db from '@/main'
 
 let storage = {
   get: function () {
@@ -63,6 +64,9 @@ export default {
   components: {
     Todo
   },
+  created () {
+    this.loadTodos(db.collection('todos'))
+  },
   data () {
     return {
       local: storage.get(),
@@ -70,7 +74,6 @@ export default {
     }
   },
   computed: {
-    // ...mapGetters(['todos']),
     ...mapState([
       'todos',
       'newTodo'
@@ -92,7 +95,8 @@ export default {
       'setNewTodo',
       'clearTodo',
       'addTodo',
-      'clearNewTodo'
+      'clearNewTodo',
+      'loadTodos'
     ]),
     addTodoItem () {
       this.addTodo()
