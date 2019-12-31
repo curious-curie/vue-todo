@@ -70,6 +70,7 @@ export default {
     }
   },
   computed: {
+    // ...mapGetters(['todos']),
     ...mapState([
       'todos',
       'newTodo'

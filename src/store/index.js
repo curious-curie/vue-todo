@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as firebase from 'firebase'
+import db from '@/main'
 
 Vue.use(Vuex)
 
@@ -43,6 +45,13 @@ export default new Vuex.Store({
     },
     UPDATE_STORAGE (state) {
       localStorage.setItem('todos', JSON.stringify(state.todos))
+      db.collection('todos').orderBy('created_at').onSnapshot((snapshot) => {
+        let items = []
+        snapshot.forEach((doc) => {
+          items.push({ id: doc.id, title: doc.data().title })
+        })
+        state.items = items
+      })
     } },
 
   actions: {
@@ -55,6 +64,13 @@ export default new Vuex.Store({
         }
         commit('ADD_TODO', todoItem)
         commit('UPDATE_STORAGE')
+        // let ref = firebase.database().ref('todos')
+        db.collection('todos').doc(todoItem.title).set({
+          id: state.todos.length,
+          title: state.newTodo,
+          completed: false
+        })
+        console.log(db.collection('todos'))
       }
     },
     setNewTodo ({ commit }, todoInput) {
@@ -65,21 +81,51 @@ export default new Vuex.Store({
     },
     deleteTodo ({ commit }, todo) {
       commit('DELETE_TODO', todo)
+      db.collection('todos')
+        .doc(todo.title)
+        .delete()
+      let ref = firebase.database().ref('todos')
+      ref.child(todo.id).remove()
       commit('UPDATE_STORAGE')
     },
     toggleTodo ({ commit }, todo) {
       commit('TOGGLE_TODO', todo)
+      const todoItem = { ...todo }
+      todoItem.completed = !todo.completed
+      db.collection('todos')
+        .doc(todo.title)
+        .set(todoItem)
       commit('UPDATE_STORAGE')
     },
     clearCompleted ({ commit }) {
       commit('CLEAR_COMPLETED')
       commit('UPDATE_STORAGE')
+      db.collection('todos').get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            if (doc.data().completed) {
+              db.collection('todos')
+                .doc(doc.data().title)
+                .delete()
+            }
+          })
+        })
     },
     completeAll ({ commit }) {
       commit('COMPLETE_ALL')
       commit('UPDATE_STORAGE')
+      db.collection('todos').get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            if (!doc.data().completed) {
+              db.collection('todos')
+                .doc(doc.data().title)
+                .set(
+                  { ...doc.data(), completed: true }
+                )
+            }
+          })
+        })
     }
-  },
-  getters: {
   }
 })
