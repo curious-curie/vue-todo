@@ -1,26 +1,27 @@
 <template>
     <div>
-        <h3> {{ todo.title }} </h3>
-        <button
-          v-if="todo.completed"
+        <div
+          class = "todo__complete"
           @click="toggleTodo(todo)"
         >
-          Completed
-        </button>
+        □
+        </div>
 
-        <button
-          v-else
+        <div
+          class = "todo__complete check"
+          :class="{hidden: !todo.completed}"
           @click="toggleTodo(todo)"
         >
-          Complete
-        </button>
-
-        <button
+          ✔️
+        </div>
+         {{ todo.title }}
+        <div
+          class="todo__delete"
           id="deleteTodo"
           @click="deleteTodo(todo)"
         >
           X
-        </button>
+        </div>
 
     </div>
 </template>

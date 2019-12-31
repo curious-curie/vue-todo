@@ -1,24 +1,32 @@
 <template>
-  <div>
-      <div>
+  <div class="container">
+
           <input
           placeholder="What needs to be done?"
           v-on:keyup.enter="addTodoItem"
           @change="setNewTodo($event.target.value)"
-          :value="newTodo"
-        >
-      </div>
+          :value="newTodo">
       <todo
+        class = "todo__container"
         v-for="todo in filtered"
         :key="todo.id"
         :todo="todo"
+        :class="{ completed: todo.completed }"
       />
 
-      <button @click="clearCompleted">Clear completed</button>
-      <button @click="completeAll">complete all</button>
-      <router-link to = '/all'><button>all</button></router-link>
-      <router-link to = '/active'><button>active</button></router-link>
-      <router-link to = '/completed'><button>completed</button></router-link>
+      <div class="footer">
+        <button @click="clearCompleted">clear completed</button>
+        <button @click="completeAll">complete all</button>
+        <router-link to = '/all'>
+          <button :class ="{ active: selectedFilter === 'all'}">all</button>
+        </router-link>
+        <router-link to = '/active'>
+          <button :class ="{ active: selectedFilter === 'active'}">active</button>
+        </router-link>
+        <router-link to = '/completed'>
+          <button :class ="{ active: selectedFilter === 'completed'}">completed</button>
+        </router-link>
+      </div>
 
   </div>
 </template>
@@ -92,3 +100,8 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import "../styles/main.scss";
+
+</style>
