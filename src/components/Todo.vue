@@ -1,24 +1,28 @@
 <template>
     <div>
-        {{ todo.title }}
-        <button
-          v-if="todo.completed"
+        <div
+          id="checkbox"
+          class = "todo__complete"
           @click="toggleTodo(todo)"
         >
-        Completed
-        </button>
+        □
+        </div>
 
-        <button
-        v-else @click="toggleTodo(todo)"
+        <div
+          class = "todo__complete check"
+          :class="{hidden: !todo.completed}"
+          @click="toggleTodo(todo)"
         >
-        Complete
-        </button>
-
-        <button
-        @click="deleteTodo(todo)"
+          ✔️
+        </div>
+        <div id="title"> {{ todo.title }} </div>
+        <div
+          class="todo__delete"
+          id="deleteTodo"
+          @click="deleteTodo(todo)"
         >
-        X
-        </button>
+          X
+        </div>
 
     </div>
 </template>
@@ -28,7 +32,7 @@ import { mapActions } from 'vuex'
 export default {
   props: ['todo'],
   methods: {
-    ...mapActions([
+    ...mapActions('todos', [
       'deleteTodo',
       'toggleTodo'
     ])
