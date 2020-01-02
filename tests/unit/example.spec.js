@@ -1,12 +1,27 @@
 import { shallowMount } from '@vue/test-utils'
-import HelloWorld from '@/components/HelloWorld.vue'
+import Todo from '@/components/Todo.vue'
+// import { mount } from '@vue/test-utils';
 
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
+describe('App.vue', () => {
+  test('should mount for testing', () => {
+    expect(1).toEqual(1)
+  })
+  test('Todo props test', () => {
+    const todoItem = {
+      title: 'a',
+      id: 1,
+      completed: false
+    }
+    const wrapper = shallowMount(Todo, {
+      propsData: {
+        todo: todoItem
+      }
     })
-    expect(wrapper.text()).toMatch(msg)
+    expect(wrapper.find('h3').text()).toBe(todoItem.title)
+    expect(wrapper.find('#deleteTodo').exists()).toBe(true)
+    const deleteBtn = wrapper.find('#deleteTodo')
+    // const spy = spyOn(wrapper.vm, 'deleteTodo')
+    deleteBtn.trigger('click')
+    expect(wrapper.vm.deleteTodo).toBeCalled()
   })
 })
