@@ -1,6 +1,7 @@
 <template>
     <div>
         <div
+          id="checkbox"
           class = "todo__complete"
           @click="toggleTodo(todo)"
         >
@@ -14,7 +15,7 @@
         >
           ✔️
         </div>
-         {{ todo.title }}
+        <div id="title"> {{ todo.title }} </div>
         <div
           class="todo__delete"
           id="deleteTodo"

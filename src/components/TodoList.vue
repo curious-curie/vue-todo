@@ -36,6 +36,14 @@
 import Todo from '@/components/Todo.vue'
 import { mapState, mapActions } from 'vuex'
 import db from '@/main'
+import Vue from 'vue'
+
+Vue.component(
+  'TodoList', {
+    name: 'todo-list'
+  }
+)
+
 const filters = {
   all: todos => {
     return todos
