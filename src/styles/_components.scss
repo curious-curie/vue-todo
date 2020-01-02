@@ -9,6 +9,8 @@ input {
 }
 
 .todo__delete {
+    position: relative;
+    top: -25px;
     float: right;
     border: none;
     font-size: 20px;
@@ -36,7 +38,8 @@ input {
 }
 
 .footer {
-    
+    line-height: 2rem;
+    display: inline-block;
     padding: 10px;
     button {
         margin-right: 8px;
@@ -44,11 +47,14 @@ input {
         border-style: none;
         border-radius: 15px;
         &:hover {
-            background-color: rgb(233, 233, 233);
+            background-color: rgb(235, 235, 235);
         }
     }
     .active {
         background-color: rgb(255, 218, 224);
     }
     
+}
+.filters {
+    display: inline-block;
 }

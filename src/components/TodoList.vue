@@ -15,17 +15,13 @@
       />
 
       <div class="footer">
+        <div>
         <button @click="clearCompleted">clear completed</button>
         <button @click="completeAll">complete all</button>
-        <router-link to = '/all'>
-          <button :class ="{ active: selectedFilter === 'all'}">all</button>
-        </router-link>
-        <router-link to = '/active'>
-          <button :class ="{ active: selectedFilter === 'active'}">active</button>
-        </router-link>
-        <router-link to = '/completed'>
-          <button :class ="{ active: selectedFilter === 'completed'}">completed</button>
-        </router-link>
+        </div>
+        <div v-for="filter in ['all', 'active', 'completed']" :key="filter" class="filters">
+          <router-link :to = "{ path: filter }"><button :class ="{ active: selectedFilter === filter}">{{ filter }}</button></router-link>
+        </div>
       </div>
 
   </div>
