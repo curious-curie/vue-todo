@@ -10,7 +10,6 @@ export default {
         completed: false
       }
       commit('ADD_TODO', todoItem)
-      // let ref = firebase.database().ref('todos')
       db.collection('todos').doc(todoItem.title).set({
         title: state.newTodo,
         completed: false
