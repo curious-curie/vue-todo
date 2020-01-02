@@ -1,4 +1,4 @@
-import { shallow, shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import Todo from '@/components/Todo.vue'
 import TodoList from '@/components/TodoList.vue'
@@ -38,9 +38,9 @@ describe('App.vue', () => {
     })
     expect(wrapper.find('#deleteTodo').exists()).toBe(true)
     const deleteBtn = wrapper.find('#deleteTodo')
-    // const spy = spyOn(wrapper.vm, 'deleteTodo')
+    const spy = jest.spyOn(wrapper.vm, 'deleteTodo')
     deleteBtn.trigger('click')
-    expect(wrapper.vm.deleteTodo).toBeCalled()
+    expect(spy).toBeCalled()
   })
 
   test('Toggle todo test', () => {
@@ -56,9 +56,9 @@ describe('App.vue', () => {
     })
     expect(wrapper.find('#checkbox').exists()).toBe(true)
     const deleteBtn = wrapper.find('#checkbox')
-    // const spy = spyOn(wrapper.vm, 'toggleTodo')
+    const spy = jest.spyOn(wrapper.vm, 'toggleTodo')
     deleteBtn.trigger('click')
-    expect(wrapper.vm.toggleTodo).toBeCalled()
+    expect(spy).toBeCalled()
   })
 
   test('page render test', () => {
@@ -67,24 +67,57 @@ describe('App.vue', () => {
     expect(wrapper.find('todo-list').exists()).toBe(true)
   })
 
+  const todoModules = {
+    todos: {
+      namespaced: true,
+      state: {
+        newTodo: '',
+        todos: [{
+          title: 'a',
+          id: 1,
+          completed: false
+        }]
+      },
+      actions: {
+        loadTodos: jest.fn()
+      }
+    }
+  }
+
   describe('TodoList', () => {
+    let store = new Vuex.Store({ modules: todoModules })
     it('renders a value from $store.state', () => {
-      const wrapper = shallow(TodoList, {
-        mocks: {
-          $store: {
-            state: {
-              newTodo: '',
-              todos: [{
-                title: 'a',
-                id: 1,
-                completed: false
-              }]
-            }
-          }
-        },
+      const wrapper = shallowMount(TodoList, { store,
         localVue
       })
       expect(wrapper.find('.todo__container').exists()).toBe(true)
+    })
+  })
+
+  describe('TodoList', () => {
+    let store = new Vuex.Store({ modules: todoModules })
+    it('input changes correctly', () => {
+      const wrapper = shallowMount(TodoList, { store,
+        localVue
+      })
+      const input = wrapper.find('input')
+      input.element.value = 'abc'
+      input.trigger('change')
+      expect(wrapper.find('input').element.value).toBe('abc')
+    })
+  })
+
+  describe('TodoList', () => {
+    let store = new Vuex.Store({ modules: todoModules })
+    it('clear completed click', () => {
+      const wrapper = shallowMount(TodoList, { store,
+        localVue
+      })
+      const clearBtn = wrapper.find('#clear')
+      expect(clearBtn.exists()).toBe(true)
+      // const spy = jest.spyOn(wrapper.vm)
+      // wrapper.find('#clear').trigger('click')
+      // expect(jest.fn()).toHaveBeenCalled()
     })
   })
 })
