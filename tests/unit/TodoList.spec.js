@@ -2,7 +2,6 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import { Store } from 'vuex-mock-store'
 import TodoList from '@/components/TodoList.vue'
-// import { mount } from '@vue/test-utils';
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
@@ -21,21 +20,13 @@ const mocks = {
 afterEach(() => store.reset())
 
 describe('TodoList.vue', () => {
-  let wrapper
   beforeEach(() => {
-    wrapper = shallowMount(TodoList, { mocks })
+    shallowMount(TodoList, { mocks })
   })
 
   it('loaded when rendered', () => {
     expect(store.dispatch).toHaveBeenCalled()
   })
-
-  it('calls function', () => {
-    wrapper.find('#clear').trigger('click')
-    expect(store.dispatch).toHaveBeenCalled()
-    // expect(store.commit).toBeCalled()
-  }
-  )
 })
 
 const todoModules = {
@@ -89,5 +80,17 @@ describe('TodoList', () => {
     // const spy = jest.spyOn(wrapper.vm)
     // wrapper.find('#clear').trigger('click')
     // expect(jest.fn()).toHaveBeenCalled()
+  })
+})
+
+describe('TodoList', () => {
+  let store = new Vuex.Store({ modules: todoModules })
+  it('input changes correctly', () => {
+    const wrapper = shallowMount(TodoList, { store,
+      localVue
+    })
+    expect(wrapper.find('#filter-router').exists()).toBe(true)
+    const filter = wrapper.find('#filter-router')
+    console.log(filter)
   })
 })

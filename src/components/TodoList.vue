@@ -19,7 +19,7 @@
         <button id="complete" @click="completeAll">complete all</button>
         </div>
         <div v-for="filter in ['all', 'active', 'completed']" :key="filter" class="filters">
-          <router-link :to = "{ path: filter }"><button :class ="{ active: selectedFilter === filter}">{{ filter }}</button></router-link>
+          <router-link :to = "{ path: filter }" id="filter-router"><button :class ="{ active: selectedFilter === filter}">{{ filter }}</button></router-link>
         </div>
       </div>
 

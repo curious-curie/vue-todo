@@ -30,6 +30,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
+  name: 'Todo',
   props: ['todo'],
   methods: {
     ...mapActions('todos', [

@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1577955547040" clover="3.2.0">
-  <project timestamp="1577955547040" name="All files">
-    <metrics statements="73" coveredstatements="30" conditionals="6" coveredconditionals="0" methods="36" coveredmethods="5" elements="115" coveredelements="35" complexity="0" loc="73" ncloc="73" packages="6" files="10" classes="10"/>
+<coverage generated="1578027266034" clover="3.2.0">
+  <project timestamp="1578027266034" name="All files">
+    <metrics statements="75" coveredstatements="32" conditionals="6" coveredconditionals="0" methods="36" coveredmethods="5" elements="117" coveredelements="37" complexity="0" loc="75" ncloc="75" packages="6" files="10" classes="10"/>
     <package name="src">
-      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="main.js" path="/Users/curieyoo/tf/vue-todo/src/main.js">
-        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="7" count="2" type="stmt"/>
-        <line num="18" count="2" type="stmt"/>
-        <line num="19" count="2" type="stmt"/>
-        <line num="22" count="2" type="stmt"/>
+        <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
         <line num="25" count="2" type="stmt"/>
+        <line num="26" count="2" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
       </file>
     </package>
     <package name="src.components">
@@ -27,14 +29,14 @@
         <line num="34" count="2" type="stmt"/>
         <line num="36" count="2" type="stmt"/>
         <line num="42" count="2" type="stmt"/>
-        <line num="44" count="26" type="stmt"/>
+        <line num="44" count="18" type="stmt"/>
         <line num="47" count="0" type="stmt"/>
         <line num="48" count="0" type="stmt"/>
         <line num="52" count="0" type="stmt"/>
         <line num="53" count="0" type="stmt"/>
         <line num="64" count="8" type="stmt"/>
         <line num="67" count="8" type="stmt"/>
-        <line num="76" count="26" type="stmt"/>
+        <line num="76" count="18" type="stmt"/>
         <line num="81" count="0" type="stmt"/>
         <line num="97" count="0" type="stmt"/>
         <line num="98" count="0" type="stmt"/>
