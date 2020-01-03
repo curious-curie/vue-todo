@@ -10,10 +10,7 @@ export default {
         completed: false
       }
       commit('ADD_TODO', todoItem)
-      db.collection('todos').doc(todoItem.title).set({
-        title: state.newTodo,
-        completed: false
-      })
+      db.collection('todos').doc(todoItem.title).set(todoItem)
     }
   },
   setNewTodo ({ commit }, todoInput) {
@@ -30,8 +27,7 @@ export default {
   },
   toggleTodo ({ commit }, todo) {
     commit('TOGGLE_TODO', todo)
-    const todoItem = { ...todo }
-    todoItem.completed = !todo.completed
+    const todoItem = { ...todo, completed: !todo.completed }
     db.collection('todos')
       .doc(todo.title)
       .set(todoItem)

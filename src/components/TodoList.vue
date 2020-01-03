@@ -39,21 +39,33 @@ Vue.component(
   }
 )
 
-const filters = {
-  all: todos => {
-    return todos
-  },
-  active: function (todos) {
-    return todos.filter(todo => {
-      return !todo.completed
-    })
-  },
-  completed: function (todos) {
-    return todos.filter(todo => {
-      return todo.completed
-    })
-  }
+// const filters = {
+//   all: todos => {
+//     return todos
+//   },
+//   active: function (todos) {
+//     return todos.filter(todo => {
+//       return !todo.completed
+//     })
+//   },
+//   completed: function (todos) {
+//     return todos.filter(todo => {
+//       return todo.completed
+//     })
+//   }
+// }
+
+const filters = selected => todos => {
+  return todos.filter(todo => {
+    switch (selected) {
+      case ('all'): return todo
+      case ('active'): return !todo.completed
+      case ('completed'): return todo.completed
+      default: return todo
+    }
+  })
 }
+// filters(selected)(todos)
 
 export default {
   name: 'TodoList',
@@ -73,7 +85,7 @@ export default {
       'todos',
       'newTodo'
     ]),
-    filteredTodos () { return filters[this.selectedFilter](this.todos) }
+    filteredTodos () { return filters(this.selectedFilter)(this.todos) }
   },
 
   watch: {
