@@ -31,7 +31,8 @@
     "lint-staged": "^9.4.3",
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "vuex-mock-store": "0.0.8"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

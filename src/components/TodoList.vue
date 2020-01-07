@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
       <input
           placeholder="What needs to be done?"
           v-on:keyup.enter="addTodoItem"
@@ -15,17 +14,13 @@
       />
 
       <div class="footer">
-        <button @click="clearCompleted">clear completed</button>
-        <button @click="completeAll">complete all</button>
-        <router-link to = '/all'>
-          <button :class ="{ active: selectedFilter === 'all'}">all</button>
-        </router-link>
-        <router-link to = '/active'>
-          <button :class ="{ active: selectedFilter === 'active'}">active</button>
-        </router-link>
-        <router-link to = '/completed'>
-          <button :class ="{ active: selectedFilter === 'completed'}">completed</button>
-        </router-link>
+        <div>
+        <button id="clear" @click="clearCompleted">clear completed</button>
+        <button id="complete" @click="completeAll">complete all</button>
+        </div>
+        <div v-for="filter in ['all', 'active', 'completed']" :key="filter" class="filters">
+          <router-link :to = "{ path: filter }" id="filter-router"><button :class ="{ active: selectedFilter === filter}">{{ filter }}</button></router-link>
+        </div>
       </div>
 
   </div>
@@ -36,21 +31,41 @@
 import Todo from '@/components/Todo.vue'
 import { mapState, mapActions } from 'vuex'
 import db from '@/main'
-const filters = {
-  all: todos => {
-    return todos
-  },
-  active: function (todos) {
-    return todos.filter(todo => {
-      return !todo.completed
-    })
-  },
-  completed: function (todos) {
-    return todos.filter(todo => {
-      return todo.completed
-    })
+import Vue from 'vue'
+
+Vue.component(
+  'TodoList', {
+    name: 'todo-list'
   }
+)
+
+// const filters = {
+//   all: todos => {
+//     return todos
+//   },
+//   active: function (todos) {
+//     return todos.filter(todo => {
+//       return !todo.completed
+//     })
+//   },
+//   completed: function (todos) {
+//     return todos.filter(todo => {
+//       return todo.completed
+//     })
+//   }
+// }
+
+const filters = selected => todos => {
+  return todos.filter(todo => {
+    switch (selected) {
+      case ('all'): return todo
+      case ('active'): return !todo.completed
+      case ('completed'): return todo.completed
+      default: return todo
+    }
+  })
 }
+// filters(selected)(todos)
 
 export default {
   name: 'TodoList',
@@ -70,7 +85,7 @@ export default {
       'todos',
       'newTodo'
     ]),
-    filteredTodos () { return filters[this.selectedFilter](this.todos) }
+    filteredTodos () { return filters(this.selectedFilter)(this.todos) }
   },
 
   watch: {

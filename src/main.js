@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import * as firebase from 'firebase'
+import TodoList from '@/components/TodoList.vue'
+import Todo from '@/components/Todo.vue'
 
 const config = {
   apiKey: 'AIzaSyD0t6RPGQT_vjTJwClyKjdf6RalhON7eDo',
@@ -19,6 +21,8 @@ Vue.prototype.$firebase = firebase.initializeApp(config)
 const db = firebase.firestore()
 export default db
 
+Vue.component('todo-list', TodoList)
+Vue.component('todo', Todo)
 new Vue({
   router,
   store,
